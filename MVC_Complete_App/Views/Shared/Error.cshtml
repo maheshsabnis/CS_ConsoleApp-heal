@@ -1,0 +1,32 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+
+
+
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if (Model != null)
+{
+    <h2>The Controller throwing exception is @Model.ControllerName </h2>
+    <h2>The Action Name throwing exception is @Model.ActionName</h2>
+    <h2>The Exception is @Model.Exception.Message</h2>
+
+    @Html.ActionLink("Go Back", Model.ActionName, Model.ControllerName)
+}
+else
+{
+    @*Read data from ViewData*@
+    <h2>The Controller throwing exception is @ViewData["ControllerName"] </h2>
+    <h2>
+        The Action Name throwing exception is @ViewData["ActionName"]</h2>
+    <h2>
+        The Exception is @ViewData["Exception"]</h2>
+
+@Html.ActionLink("Go Back", @ViewData["ActionName"].ToString(), @ViewData["ControllerName"].ToString())
+}
+
