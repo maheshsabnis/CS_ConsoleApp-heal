@@ -13,6 +13,7 @@ namespace MVC_Complete_App
     {
         public static void Register(HttpConfiguration config)
         {
+            // This is used for Attribute  based Routing
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(

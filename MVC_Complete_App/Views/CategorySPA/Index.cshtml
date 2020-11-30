@@ -1,0 +1,172 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<!--Refer the jQuery -->
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+<script>
+	// when the DOM is loaded an ready
+	$(document).ready(function () {
+		var Categories = [];
+		// this function will make an AJAX call 
+		// to CategoryAPI and real all Categories
+		// $.ajax() the AJAX call metadata
+		// .done() the Seccuessful execution
+		// .fail() the call is failed
+		function loadData() {
+			$.ajax({
+				url: '/api/CategoryAPI',
+				type: 'GET', // this is the HTTP request method GET, POST, PUT , DELETE
+			}).done(function (resp) {
+				// receive the data
+				Categories = resp;
+				alert("Received data " + JSON.stringify(Categories));
+				// generate table
+				generateRows(Categories);
+			}).fail(function (error) {
+				 // data fetch failure 
+				alert("Error Occured " + error);
+			});
+		}
+
+		// subscribe to the click event of the button 
+		$("#btnGetData").on('click', function () {
+			loadData();
+		});
+		$("#btnSave").on('click', function () {
+
+			// read data from TextBoxes
+			var category = {
+				CategoryId: $("#catid").val(),
+				CategoryName: $("#catname").val(),
+				SubCategoryName: $("#subcatname").val(),
+				BasePrice: $("#baseprice").val()
+			};
+
+			$.ajax({
+				url: '/api/CategoryAPI',
+				type: 'POST', // this is the HTTP request method GET, POST, PUT , DELETE
+				data: JSON.stringify(category), // pass data as JSON to API
+				contentType: 'application/json', // the MIME type used by server to map data to CLR object
+				dataType: 'json' // represent the type of data
+			}).done(function (resp) {
+				// display CategoryRowId in TextBox
+				// SInce the response is Category object
+				// we can read the CategoryRowId
+				$("#catrowid").val(resp.CategoryRowId);
+				 
+			}).fail(function (error) {
+				// data fetch failure 
+				alert("Error Occured " + error);
+			});
+		});
+
+
+		$("#btnUpdate").on('click', function () {
+				// select the record from Table and load the record in
+			// textboxes, update values in textboxes and then pass this record to PUT method of the
+			// CategoryAPI
+
+
+			$.ajax({
+				url: '/api/CategoryAPI' + // {categoryId},
+				type: 'PUT', // this is the HTTP request method GET, POST, PUT , DELETE
+				data: JSON.stringify(category), // pass data as JSON to API
+				contentType: 'application/json', // the MIME type used by server to map data to CLR object
+				dataType: 'json' // represent the type of data
+			}).done(function (resp) {
+				 
+			}).fail(function (error) {
+				// data fetch failure 
+				alert("Error Occured " + error);
+			});
+
+		});
+
+		$("#btnDelete").on('click', function () {
+
+				// select the record from Table and load the record in
+			// textboxes,click on DELETE button and then send the AJAX call to
+			//CategoryAPI to Delete record
+
+
+			$.ajax({
+				url: '/api/CategoryAPI' + // {CATEGORYID},
+				type: 'DELETE', // this is the HTTP request method GET, POST, PUT , DELETE
+				 
+			}).done(function (resp) {
+				 
+
+			}).fail(function (error) {
+				// data fetch failure 
+				alert("Error Occured " + error);
+			});
+		});
+
+
+		// generate rows
+		function generateRows(Categories) {
+			$("#tablebody").html('');
+			var tr; 
+			$.each(Categories, function (i, c) {
+				 
+				tr += "<tr><td>" + c.CategoryRowId + "</td><td>"
+					+ c.CategoryId + "</td><td>" + c.CategoryName +
+					"</td><td>" + c.SubCategoryName + "</td><td>" + c.BasePrice + "</td></tr>";
+			});
+
+			// add the data in table body
+			$("#tablebody").html(tr);
+
+		}
+	});
+</script>
+
+
+<h2>Category Single Page Application for CRUD operations</h2>
+<div class="container">
+	<div class="form-group">
+		<label>Category Row Id</label>
+		<input type="text" class="form-control" id="catrowid" disabled/>
+	</div>
+	<div class="form-group">
+		<label>Category Id</label>
+		<input type="text" class="form-control" id="catid" />
+	</div>
+	<div class="form-group">
+		<label>Category Name</label>
+		<input type="text" class="form-control" id="catname" />
+	</div>
+	<div class="form-group">
+		<label>Sub Category Name</label>
+		<input type="text" class="form-control" id="subcatname" />
+	</div>
+	<div class="form-group">
+		<label>Base Price</label>
+		<input type="number" class="form-control" id="baseprice" />
+	</div>
+	<div class="form-group">
+		<input type="button" value="Load Data" id="btnGetData" class="btn btn-info" />
+		<input type="button" value="Clear" id="btnClear" class="btn btn-warning" />
+		<input type="button" value="Save" id="btnSave" class="btn btn-success" />
+		<input type="button" value="Update" id="btnUpdate" class="btn btn-info" />
+		<input type="button" value="Delete" id="btnDelete" class="btn btn-danger" />
+	</div>
+	<hr/>
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>Category Row Id</th>
+				<th>Category Id</th>
+				<th>Category Name</th>
+				<th>Sub Category Name</th>
+				<th>Base Price</th>
+			</tr>
+		</thead>
+		<tbody id="tablebody"></tbody>
+	</table>
+</div>
+
+
+
