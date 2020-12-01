@@ -1,0 +1,17 @@
+﻿@model IEnumerable<MVC_Complete_App.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+ 
+@foreach (var item in Model) {
+    @Html.Partial("CategoryRecord", item)
+}
+
+ 

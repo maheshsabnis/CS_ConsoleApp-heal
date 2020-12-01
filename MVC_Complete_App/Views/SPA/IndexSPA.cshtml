@@ -1,0 +1,72 @@
+﻿<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+	$(document).ready(function () {
+		$("#loadcat").on('click', function () {
+			// controller/action-method
+			var viewUrl = '@Url.Action("ListCategories", "SPA")';
+			loadView(viewUrl);
+		});
+
+		$("#addcat").on('click', function () {
+			// controller/action-method
+			var viewUrl = '@Url.Action("AddCategory", "SPA")';
+			loadView(viewUrl);
+		});
+
+		$("#editcat").on('click', function () {
+			// controller/action-method
+			var viewUrl = '@Url.Action("EditCategory", "SPA")';
+			loadView(viewUrl);
+		});
+		$("#deletecat").on('click', function () {
+			// controller/action-method
+			var viewUrl = '@Url.Action("DeleteCategory", "SPA")';
+			loadView(viewUrl);
+		});
+		$("#clear").on("click", function () {
+			$("#dvcontainer").html('');
+		});
+		// This method will accept URL of the
+		// MVC Controller and its Action Method
+		// and receive partial veiw HTML response
+		function loadView(viewurl) {
+			$.ajax({
+				url: viewurl,
+				type: "GET",
+				data: 'html'
+			}).done(function (response) {
+				$("#dvcontainer").html(response);
+			}).fail(function (error) {
+				$("#dvcontainer").html("No View Found " + error);
+			});
+		}
+	});
+
+</script>
+
+<div class="container">
+	<h2>The Single Page App</h2>
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>
+					<input id="loadcat" value="Load Categories" class="btn btn-info" />
+				</th>
+				<th>
+					<input id="addcat" value="Add Category" class="btn btn-success" />
+				</th>
+				<th>
+					<input id="editcat" value="Edit Category" class="btn btn-warning" />
+				</th>
+				<th>
+					<input id="deletecat" value="Delete Category" class="btn btn-danger" />
+				</th>
+				<th>
+					<input id="clear" value="Clear" class="btn btn-info" />
+				</th>
+			</tr>
+		</thead>
+	</table>
+	<hr/>
+	<div class="container" id="dvcontainer"></div>
+</div>

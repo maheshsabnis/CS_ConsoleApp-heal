@@ -1,0 +1,51 @@
+﻿<h2>List of Categories</h2>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+$(document).ready(function () {
+		var Categories = []; 
+		function loadData() {
+			$.ajax({
+				url: '/api/CategoryAPI',
+				type: 'GET',  
+			}).done(function (resp) {
+				 
+				Categories = resp;
+				 
+				generateRows(Categories);
+			}).fail(function (error) {
+				 
+				alert("Error Occured " + error);
+			});
+		}
+
+			loadData();
+		// generate rows
+		function generateRows(Categories) {
+			$("#tablebody").html('');
+			var tr;
+			$.each(Categories, function (i, c) {
+
+				tr += "<tr><td>" + c.CategoryRowId + "</td><td>"
+					+ c.CategoryId + "</td><td>" + c.CategoryName +
+					"</td><td>" + c.SubCategoryName + "</td><td>" +
+					c.BasePrice + "</td></tr>";
+			});
+
+			// add the data in table body
+			$("#tablebody").html(tr);
+
+		}
+	});
+</script>
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Category Row Id</th>
+			<th>Category Id</th>
+			<th>Category Name</th>
+			<th>Sub Category Name</th>
+			<th>Base Price</th>
+		</tr>
+	</thead>
+	<tbody id="tablebody"></tbody>
+</table>

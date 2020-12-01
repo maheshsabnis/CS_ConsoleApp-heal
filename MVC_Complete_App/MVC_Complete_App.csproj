@@ -203,6 +203,7 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\SPAController.cs" />
     <Compile Include="CustomFilters\CustomExceptionFilterAttribute.cs" />
     <Compile Include="CustomFilters\LogFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -297,6 +298,13 @@
     <Content Include="Views\Role\Create.cshtml" />
     <Content Include="Views\Role\Edit.cshtml" />
     <Content Include="Views\CategorySPA\Index.cshtml" />
+    <Content Include="Views\SPA\Index.cshtml" />
+    <Content Include="Views\SPA\CategoryRecord.cshtml" />
+    <Content Include="Views\SPA\IndexSPA.cshtml" />
+    <Content Include="Views\SPA\ListCategories.cshtml" />
+    <Content Include="Views\SPA\AddCategory.cshtml" />
+    <Content Include="Views\SPA\EditCategory.cshtml" />
+    <Content Include="Views\SPA\DeleteCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

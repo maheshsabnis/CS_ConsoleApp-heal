@@ -1,0 +1,82 @@
+﻿<h2>Category To Edit</h2>
+ 
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+	$(document).ready(function () {
+		// display dialog box to accept CategoryRowId
+		var catId = prompt("Enter the Category Id to be updated");
+		// get data by making cal to WEB API to
+		// fetch data to be updated 
+
+		getData(catId);
+
+		function getData(catId) {
+			$.ajax({
+				url: '/api/CategoryAPI/' + catId,
+				type:'GET'
+			}).done(function (response) {
+				// display data in text boxes
+				$("#catrowid").val(response.CategoryRowId);
+				$("#catid").val(response.CategoryId);
+				$("#catname").val(response.CategoryName);
+				$("#subcatname").val(response.SubCategoryName);
+				$("#baseprice").val(response.BasePrice);
+			}).fail(function (err) {
+				alert("Record Not Found");
+			});		
+		}
+
+		$("#btnSave").on('click', function () {
+
+			var category = {
+				CategoryRowId: $("#catrowid").val(),
+				CategoryId: $("#catid").val(),
+				CategoryName: $("#catname").val(),
+				SubCategoryName: $("#subcatname").val(),
+				BasePrice: $("#baseprice").val()
+			};
+			$.ajax({
+				url: '/api/CategoryAPI/' + category.CategoryRowId,
+				type: 'PUT',
+				data: JSON.stringify(category),
+				contentType: 'application/json',
+				dataType: 'json'
+			}).done(function (resp) {
+
+				$("#catrowid").val(resp.CategoryRowId);
+
+			}).fail(function (error) {
+				// data fetch failure
+				alert("Error Occured " + error);
+			});
+		});
+	});
+
+</script>
+<div class="container">
+	<div class="form-group">
+		<label>Category Row Id</label>
+		<input type="text" class="form-control" id="catrowid" disabled />
+	</div>
+	<div class="form-group">
+		<label>Category Id</label>
+		<input type="text" class="form-control" id="catid" />
+	</div>
+	<div class="form-group">
+		<label>Category Name</label>
+		<input type="text" class="form-control" id="catname" />
+	</div>
+	<div class="form-group">
+		<label>Sub Category Name</label>
+		<input type="text" class="form-control" id="subcatname" />
+	</div>
+	<div class="form-group">
+		<label>Base Price</label>
+		<input type="number" class="form-control" id="baseprice" />
+	</div>
+	<div class="form-group">
+
+		<input type="button" value="Save" id="btnSave" class="btn btn-success" />
+
+	</div>
+</div>
