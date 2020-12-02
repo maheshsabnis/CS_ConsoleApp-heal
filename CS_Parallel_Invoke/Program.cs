@@ -51,10 +51,6 @@ namespace CS_Parallel_Invoke
 			Console.WriteLine($"Tax of EmpNo {employee.EmpNo} = {employee.TDS}");
 		}
 
-
-
-
-
 		static void ParallelSalesPriceGenerator()
 		{
 			var prds = new Products();
