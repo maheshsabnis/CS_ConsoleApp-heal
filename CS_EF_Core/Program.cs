@@ -8,7 +8,7 @@ namespace CS_EF_Core
 		static void Main(string[] args)
 		{
 			var ctx = new EFCoreDbContext();
-
+			 
 			try
 			{
 				// if the database is laready available then delete it
