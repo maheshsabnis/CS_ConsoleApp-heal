@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ASPNET_Core_App.Models;
+using ASPNET_Core_App.Repositories;
 
 namespace ASPNET_Core_App
 {
@@ -63,6 +65,23 @@ namespace ASPNET_Core_App
 			// service for Providing User registration of Login
 			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 				.AddEntityFrameworkStores<ApplicationDbContext>();
+
+			// register the RHealDbCOntext  in DI Container
+			// a new connection object will be created for
+			// every new session (Scopped)
+			// this will read the connectionstring 
+			// from the appsettings.json
+			// and connect to database
+			services.AddDbContext<RHealDbContext>(options=> {
+				options.UseSqlServer(Configuration.GetConnectionString("RHealDbConnection"));
+			});
+
+			// register repositories in DI Cotainer as Scopped
+			services.AddScoped<IBizRepository<Categories,int>, CategoryBizRepository>();
+			services.AddScoped<IBizRepository<Products, int>, ProductBizRepository>();
+
+
+
 			// service to accept request for MVC and API COntrollers
 			// and views
 			services.AddControllersWithViews();
