@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ASPNET_Core_App.Models;
 using ASPNET_Core_App.Repositories;
+using ASPNET_Core_App.CustomFilters;
 
 namespace ASPNET_Core_App
 {
@@ -84,7 +85,12 @@ namespace ASPNET_Core_App
 
 			// service to accept request for MVC and API COntrollers
 			// and views
-			services.AddControllersWithViews();
+			services.AddControllersWithViews(options=> {
+				// registering the Action Filters
+				// typeof(ErrorFilter) will instantiate the action filter
+				// and AUTO-RESOLVE its depednencies e.g. IModelMetadataProvider
+				options.Filters.Add(typeof(ErrorFilter));
+			});
 			// service to accept request for Razor WebForms
 			// NOte: in ASP.NET Core 3.0+
 			// All Identity Views e.g. Register, Login, etc.

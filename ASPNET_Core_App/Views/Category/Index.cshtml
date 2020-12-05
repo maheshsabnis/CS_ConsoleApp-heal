@@ -48,10 +48,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.SubCategoryName)
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.CategoryRowId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.CategoryRowId })
-            </td>
+			<td>
+				@Html.ActionLink("Edit", "Edit", new { id = item.CategoryRowId }) |
+				@Html.ActionLink("Delete", "Delete", new { id = item.CategoryRowId })|
+				@Html.ActionLink("Show Details", "ShowDetails", new { id = item.CategoryRowId })
+
+			</td>
         </tr>
 }
     </tbody>

@@ -1,8 +1,9 @@
 ﻿using ASPNET_Core_App.Models;
 using ASPNET_Core_App.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
-
+using ASPNET_Core_App.TempdataExtension;
 namespace ASPNET_Core_App.Controllers
 {
 	/// <summary>
@@ -45,13 +46,26 @@ namespace ASPNET_Core_App.Controllers
 
 		[HttpPost]
 		public async Task<IActionResult> Create(Categories data)
-		{ 
-			if(ModelState.IsValid)
-			{
-				data = await catRepository.CreateAsync(data);
-				return RedirectToAction("Index");
-			}
-			return View(data);
+		{
+			//try
+			//{
+				if (ModelState.IsValid)
+				{
+					if (data.BasePrice < 0) throw new Exception("Base Price Cannot be -ve");
+					data = await catRepository.CreateAsync(data);
+					return RedirectToAction("Index");
+				}
+				return View(data);
+			//}
+			//catch (Exception ex)
+			//{
+			//	return View("Error", new ErrorViewModel()
+			//	{
+			//		 ControllerName = this.RouteData.Values["controller"].ToString(),
+			//		 ActionName = this.RouteData.Values["action"].ToString(),
+			//		 ErrorMessage =ex.Message
+			//	}); 
+			//}
 		}
 
 		public  async Task<IActionResult> Edit(int id)
@@ -75,6 +89,17 @@ namespace ASPNET_Core_App.Controllers
 		{
 			var res = await catRepository.DeleteAsync(id);
 			return RedirectToAction("Index");
+		}
+
+		public IActionResult ShowDetails(int id)
+		{
+
+			Categories cat = catRepository.GetDataAsync(id).Result;
+			TempData.SetData<Categories>("Cat", cat);
+			 
+
+			TempData["CatRowId"] = id;
+			return RedirectToAction("Index", "Product");
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using ASPNET_Core_App.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,29 +15,51 @@ namespace ASPNET_Core_App.Repositories
 			_context = context;
 		}
 
-		public Task<Products> CreateAsync(Products entity)
+		public async Task<Products> CreateAsync(Products entity)
 		{
-			throw new NotImplementedException();
+			// always decorate the async executing 
+			// statement as "await", if the method
+			// containing this statement is decorated as "async"
+			var res = await _context.Products.AddAsync(entity);
+			await _context.SaveChangesAsync();
+			return res.Entity;
 		}
 
-		public Task<bool> DeleteAsync(int id)
+		public async Task<bool> DeleteAsync(int id)
 		{
-			throw new NotImplementedException();
+			var result = await _context.Products.FindAsync(id);
+			if (result == null) return false;
+			_context.Products.Remove(result);
+			await _context.SaveChangesAsync();
+			return true;
 		}
 
-		public Task<List<Products>> GetDataAsync()
+		public async Task<List<Products>> GetDataAsync()
 		{
-			throw new NotImplementedException();
+			var records = await _context.Products.ToListAsync();
+			return records;
 		}
 
-		public Task<Products> GetDataAsync(int id)
+		public async Task<Products> GetDataAsync(int id)
 		{
-			throw new NotImplementedException();
+			var result = await _context.Products.FindAsync(id);
+			return result;
 		}
 
-		public Task<Products> UpdateAync(int id, Products entity)
+		public async Task<Products> UpdateAync(int id, Products entity)
 		{
-			throw new NotImplementedException();
+			var result = await _context.Products.FindAsync(id);
+			if (result == null) return null;
+
+			result.ProductId = entity.ProductId;
+			result.ProductName = entity.ProductName;
+			result.Manufacturer = entity.Manufacturer;
+			result.Description = entity.Description;
+			result.Price = entity.Price;
+			result.CategoryRowId = entity.CategoryRowId;
+			await _context.SaveChangesAsync();
+			return result;
+
 		}
 	}
 }
