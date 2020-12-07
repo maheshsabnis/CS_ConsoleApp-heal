@@ -82,6 +82,16 @@ namespace ASPNET_Core_App
 			services.AddScoped<IBizRepository<Products, int>, ProductBizRepository>();
 
 
+			// add service for session       
+			// on server-side the session infromation / session data is stored in
+			// cache memory
+			services.AddDistributedMemoryCache();
+			services.AddSession(session => {
+				// if no request in timeout span the session will be terminated
+				// and all session data will be cleared
+				session.IdleTimeout = TimeSpan.FromMinutes(20);
+			});
+
 
 			// service to accept request for MVC and API COntrollers
 			// and views
@@ -90,6 +100,12 @@ namespace ASPNET_Core_App
 				// typeof(ErrorFilter) will instantiate the action filter
 				// and AUTO-RESOLVE its depednencies e.g. IModelMetadataProvider
 				options.Filters.Add(typeof(ErrorFilter));
+			}).AddJsonOptions(options=> {
+				// AddJsonOpetions() method define the format for JSON serialization
+				// and default is camelCasing.
+				// the options.JsonSerializerOptions.PropertyNamingPolicy = null; 
+				// will supress the default policy for the serializarion 
+				options.JsonSerializerOptions.PropertyNamingPolicy = null;
 			});
 			// service to accept request for Razor WebForms
 			// NOte: in ASP.NET Core 3.0+
@@ -141,7 +157,12 @@ namespace ASPNET_Core_App
 			// MVC Controller and its action method
 			// as well as form API Controllers with  Http GET /POST/ PUT and DELETE
 			app.UseRouting();
-			// Dor Security
+
+			// use the session
+			app.UseSession();
+
+
+			// For Security
 			app.UseAuthentication();
 			app.UseAuthorization();
 			// Publish the ASP.NET Core app

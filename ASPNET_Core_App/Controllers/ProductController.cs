@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ASPNET_Core_App.TempdataExtension;
+using Microsoft.AspNetCore.Http;
 
 namespace ASPNET_Core_App.Controllers
 {
@@ -36,8 +37,10 @@ namespace ASPNET_Core_App.Controllers
 			List<Products> result = new List<Products>();
 			if (TempData.Keys.Count > 0)
 			{
-				var cat = TempData.GetData<Categories>("Cat");
-				var id = Convert.ToInt32(TempData["CatRowId"]);
+
+				//var cat = TempData.GetData<Categories>("Cat");
+				// var id = Convert.ToInt32(TempData["CatRowId"]);
+				var id = HttpContext.Session.GetInt32("CatId");
 				result = prdRepository.GetDataAsync().Result.ToList().Where(p => p.CategoryRowId == id).ToList();
 			}
 			else

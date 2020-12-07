@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using ASPNET_Core_App.TempdataExtension;
+using Microsoft.AspNetCore.Http;
 namespace ASPNET_Core_App.Controllers
 {
 	/// <summary>
@@ -95,10 +96,12 @@ namespace ASPNET_Core_App.Controllers
 		{
 
 			Categories cat = catRepository.GetDataAsync(id).Result;
-			TempData.SetData<Categories>("Cat", cat);
-			 
+			//TempData.SetData<Categories>("Cat", cat);
 
-			TempData["CatRowId"] = id;
+
+			//TempData["CatRowId"] = id;
+			HttpContext.Session.SetInt32("CatId", id);
+				
 			return RedirectToAction("Index", "Product");
 		}
 	}
