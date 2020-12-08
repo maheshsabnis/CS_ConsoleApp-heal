@@ -48,6 +48,7 @@ namespace ASPNET_Core_App.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				if (input.BasePrice < 0) throw new Exception("BasePrice cannoty be -Ve");
 				var result = await catRepository.CreateAsync(input);
 				return Ok(result);
 			}

@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using ASPNET_Core_App.Models;
 using ASPNET_Core_App.Repositories;
 using ASPNET_Core_App.CustomFilters;
+using ASPNET_Core_App.CustomMiddlewares;
 
 namespace ASPNET_Core_App
 {
@@ -99,7 +100,7 @@ namespace ASPNET_Core_App
 				// registering the Action Filters
 				// typeof(ErrorFilter) will instantiate the action filter
 				// and AUTO-RESOLVE its depednencies e.g. IModelMetadataProvider
-				options.Filters.Add(typeof(ErrorFilter));
+			//	options.Filters.Add(typeof(ErrorFilter));  // filter is commented because Middlewre dor exception is written
 			}).AddJsonOptions(options=> {
 				// AddJsonOpetions() method define the format for JSON serialization
 				// and default is camelCasing.
@@ -114,7 +115,8 @@ namespace ASPNET_Core_App
 			services.AddRazorPages();
 		}
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		// This method gets called by the runtime. Use this method to 
+		//configure the HTTP request pipeline.
 
 		/// <summary>
 		/// THis method is for HTTP Request Processing
@@ -165,6 +167,12 @@ namespace ASPNET_Core_App
 			// For Security
 			app.UseAuthentication();
 			app.UseAuthorization();
+
+			// register the Custom Exception Middlware
+			app.UseCustomExceptionMiddleware();
+
+
+
 			// Publish the ASP.NET Core app
 			// on Endpoint so that the request 
 			// will be accepted from Hosting env. e,g. IIS
